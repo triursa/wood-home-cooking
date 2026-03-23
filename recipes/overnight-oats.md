@@ -1,55 +1,70 @@
 ---
-layout: page
+layout: default
 title: Overnight Oats
-permalink: /recipes/overnight-oats/
 ---
 
-# Overnight Oats
+<a href="{{ '/recipes/' | relative_url }}" class="back-link">← Recipes</a>
 
-**Serves:** 1 jar | **Serving Size:** 1 full jar (approx. 12–14 oz) | **Prep:** No cook — assemble the night before
+<div class="page-header">
+  <div class="label">No Cook · Breakfast · Batch Prep</div>
+  <h1>Overnight Oats</h1>
+  <div class="meta-row">
+    <span class="meta-item"><strong>Serves:</strong> 1 jar</span>
+    <span class="meta-item"><strong>Serving:</strong> 1 full jar (~12–14 oz)</span>
+    <span class="meta-item"><strong>Prep:</strong> Night before, no cooking</span>
+  </div>
+</div>
 
-| Gout-Friendly | Fatty Liver-Friendly |
-|---------------|----------------------|
-| ★★★★☆ (4/5) | ★★★★☆ (4/5) |
+<div class="ratings">
+  <div class="rating-pill">
+    <span class="pill-label">Gout-Friendly</span>
+    <span class="pill-stars">★★★★☆</span>
+    <span class="pill-note">Low purine. Avoid HFCS sweeteners — small honey is fine.</span>
+  </div>
+  <div class="rating-pill">
+    <span class="pill-label">Fatty Liver-Friendly</span>
+    <span class="pill-stars">★★★★☆</span>
+    <span class="pill-note">High fiber, complex carbs. Skip added sweetener to keep sugar minimal.</span>
+  </div>
+</div>
 
-Oats, berries, and plain yogurt are all low-purine. Avoid HFCS sweeteners — honey in small amounts is fine. High fiber, complex carbs, no saturated fat. Skip added sweetener to keep sugar minimal.
+<h2>Nutrition <small style="font-size:0.75rem;color:var(--text-muted);font-family:var(--sans);font-weight:300;">per jar — with chia seeds, no sweetener</small></h2>
+<div class="nutrition-grid">
+  <div class="nutrition-cell"><span class="n-value">~380</span><span class="n-label">Calories</span></div>
+  <div class="nutrition-cell"><span class="n-value">~22g</span><span class="n-label">Protein</span></div>
+  <div class="nutrition-cell"><span class="n-value">~52g</span><span class="n-label">Carbs</span></div>
+  <div class="nutrition-cell"><span class="n-value">~8g</span><span class="n-label">Fat</span></div>
+  <div class="nutrition-cell"><span class="n-value">~9g</span><span class="n-label">Fiber</span></div>
+  <div class="nutrition-cell"><span class="n-value">~120mg</span><span class="n-label">Sodium</span></div>
+  <div class="nutrition-cell"><span class="n-value">~12g</span><span class="n-label">Sugar</span></div>
+</div>
 
----
+<h2>Ingredients <small style="font-size:0.75rem;color:var(--text-muted);font-family:var(--sans);font-weight:300;">per jar</small></h2>
+<ul class="ingredients-list">
+  <li>½ cup rolled oats (not instant)</li>
+  <li>⅔ cup plain Greek yogurt</li>
+  <li>½ cup unsweetened almond milk (or low-fat dairy milk)</li>
+  <li>½ cup mixed berries, fresh or frozen</li>
+  <li>1 tbsp chia seeds (optional)</li>
+  <li>½ tsp vanilla extract</li>
+  <li>1 tsp honey or maple syrup <em>(optional — skip if reducing sugar)</em></li>
+</ul>
 
-## Ingredients (per jar)
+<h2>Instructions</h2>
+<ol class="steps-list">
+  <li>Add oats, chia seeds, vanilla, and sweetener (if using) to a mason jar or lidded container.</li>
+  <li>Add Greek yogurt and almond milk. Stir well to combine.</li>
+  <li>Top with berries. Do not stir them in — let them sit on top.</li>
+  <li>Seal and refrigerate overnight, or at least 4 hours.</li>
+  <li>In the morning, stir everything together. Eat cold straight from the jar.</li>
+</ol>
 
-- 1/2 cup rolled oats (not instant)
-- 2/3 cup plain Greek yogurt
-- 1/2 cup unsweetened almond milk (or low-fat dairy milk)
-- 1/2 cup mixed berries, fresh or frozen
-- 1 tbsp chia seeds (optional — adds fiber and omega-3s)
-- 1/2 tsp vanilla extract
-- 1 tsp honey or maple syrup *(optional — keep minimal or skip)*
-
----
-
-## Instructions
-
-1. Add oats, chia seeds, vanilla, and sweetener (if using) to a mason jar or lidded container.
-2. Add Greek yogurt and almond milk. Stir well to combine.
-3. Top with berries. Do not stir berries in — let them sit on top.
-4. Seal and refrigerate overnight, or at least 4 hours.
-5. In the morning, stir everything together. Eat cold straight from the jar.
-
----
-
-## Nutrition (per jar — with chia seeds, no added sweetener)
-
-| Calories | Protein | Carbs | Fat | Fiber | Sodium | Sugar |
-|----------|---------|-------|-----|-------|--------|-------|
-| ~380 cal | ~22g | ~52g | ~8g | ~9g | ~120mg | ~12g |
-
----
-
-## Meal Prep Notes
-
-- Prep up to **3–5 jars at once**. Keeps in fridge for 4–5 days.
-- **Plain yogurt only** — flavored varieties add significant sugar.
-- Berries can be swapped for sliced apple or banana.
-- Swap almond milk for low-fat dairy milk if preferred.
-- Skip the honey if you are actively trying to reduce sugar intake — the berries provide enough natural sweetness.
+<div class="notes-box">
+  <div class="notes-title">Meal Prep Notes</div>
+  <ul>
+    <li>Prep up to <strong>3–5 jars at once</strong>. Keeps 4–5 days in the fridge.</li>
+    <li><strong>Plain yogurt only</strong> — flavored varieties add significant sugar.</li>
+    <li>Berries can be swapped for sliced apple or banana.</li>
+    <li>Skip the honey if you are actively reducing sugar — berries provide enough natural sweetness.</li>
+  </ul>
+</div>

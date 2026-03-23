@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} | Wood Home Cooking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-wrapper">
+    <a href="{{ '/' | relative_url }}" class="site-title">
+      Wood Home Cooking <span>/ Kaleb & Minny</span>
+    </a>
+    <nav>
+      <a href="{{ '/recipes/' | relative_url }}" {% if page.url contains '/recipes/' %}class="active"{% endif %}>Recipes</a>
+      <a href="{{ '/meal-plans/' | relative_url }}" {% if page.url contains '/meal-plans/' %}class="active"{% endif %}>Meal Plans</a>
+      <a href="{{ '/knowledge-base/preferences' | relative_url }}" {% if page.url contains '/knowledge-base/' %}class="active"{% endif %}>Guidelines</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="site-wrapper">
+    {{ content }}
+  </div>
+</main>
+
+<footer>
+  <div class="site-wrapper">
+    Wood Home Cooking &mdash; Kaleb & Minny &mdash; Updated {{ site.time | date: "%B %Y" }}
+  </div>
+</footer>
+
+<script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+</body>
+</html>

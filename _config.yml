@@ -1,16 +1,8 @@
 title: "Wood Home Cooking"
 description: "Kaleb & Minny's meal prep system — recipes, weekly plans, and health-conscious cooking."
-theme: minima
-baseurl: ""
-url: "https://your-username.github.io"  # TODO: replace with your GitHub username
+baseurl: "/wood-meal-plan"
+url: "https://triursa.github.io"
 
-# GitHub Pages settings
 markdown: kramdown
 plugins:
   - jekyll-feed
-
-# Navigation
-header_pages:
-  - recipes/index.md
-  - meal-plans/index.md
-  - knowledge-base/preferences.md

@@ -1,57 +1,73 @@
 ---
-layout: page
+layout: default
 title: Ground Beef & Zucchini Stir-Fry
-permalink: /recipes/ground-beef-zucchini/
 ---
 
-# Ground Beef & Zucchini Stir-Fry
+<a href="{{ '/recipes/' | relative_url }}" class="back-link">← Recipes</a>
 
-**Serves:** 4 | **Serving Size:** approx. 1.5 cups (no rice) | **Cook:** Stovetop
+<div class="page-header">
+  <div class="label">Stovetop · Protein · Batch Cook</div>
+  <h1>Ground Beef &amp; Zucchini Stir-Fry</h1>
+  <div class="meta-row">
+    <span class="meta-item"><strong>Serves:</strong> 4</span>
+    <span class="meta-item"><strong>Serving:</strong> ~1.5 cups (no rice)</span>
+    <span class="meta-item"><strong>Cook:</strong> Stovetop</span>
+  </div>
+</div>
 
-| Gout-Friendly | Fatty Liver-Friendly |
-|---------------|----------------------|
-| ★★★☆☆ (3/5) | ★★★☆☆ (3/5) |
+<div class="ratings">
+  <div class="rating-pill">
+    <span class="pill-label">Gout-Friendly</span>
+    <span class="pill-stars">★★★☆☆</span>
+    <span class="pill-note">Moderate purines. Use 90/10 beef. Limit to 2–3x/week.</span>
+  </div>
+  <div class="rating-pill">
+    <span class="pill-label">Fatty Liver-Friendly</span>
+    <span class="pill-stars">★★★☆☆</span>
+    <span class="pill-note">Use 90/10 strictly. Red meat warrants portion awareness.</span>
+  </div>
+</div>
 
-Red meat has moderate purines — use 90/10 ground beef and limit to 2–3x/week. 90/10 is the right lean level for fatty liver; do not go lower.
+<h2>Nutrition <small style="font-size:0.75rem;color:var(--text-muted);font-family:var(--sans);font-weight:300;">per serving — ~1.5 cups, no rice</small></h2>
+<div class="nutrition-grid">
+  <div class="nutrition-cell"><span class="n-value">~380</span><span class="n-label">Calories</span></div>
+  <div class="nutrition-cell"><span class="n-value">~38g</span><span class="n-label">Protein</span></div>
+  <div class="nutrition-cell"><span class="n-value">~6g</span><span class="n-label">Carbs</span></div>
+  <div class="nutrition-cell"><span class="n-value">~22g</span><span class="n-label">Fat</span></div>
+  <div class="nutrition-cell"><span class="n-value">~2g</span><span class="n-label">Fiber</span></div>
+  <div class="nutrition-cell"><span class="n-value">~420mg</span><span class="n-label">Sodium</span></div>
+  <div class="nutrition-cell"><span class="n-value">~3g</span><span class="n-label">Sugar</span></div>
+</div>
 
----
+<h2>Ingredients</h2>
+<ul class="ingredients-list">
+  <li>1.5 lbs ground beef, 90/10</li>
+  <li>2 medium zucchini, diced into ½-inch pieces</li>
+  <li>1 bell pepper, diced</li>
+  <li>3 cloves garlic, minced (or 1 tsp garlic powder)</li>
+  <li>2 tbsp low-sodium soy sauce</li>
+  <li>1 tsp sesame oil (optional)</li>
+  <li>½ tsp black pepper</li>
+  <li>½ tsp cumin</li>
+  <li>1 tbsp olive oil</li>
+</ul>
 
-## Ingredients
+<h2>Instructions</h2>
+<ol class="steps-list">
+  <li>Heat olive oil in a large skillet over medium-high heat.</li>
+  <li>Add ground beef. Break apart and cook until browned, about 7–8 minutes. Drain excess fat.</li>
+  <li>Push beef to one side. Add zucchini and bell pepper to the empty side. Cook 4–5 minutes until softened.</li>
+  <li>Add garlic. Stir everything together and cook 1 minute.</li>
+  <li>Add soy sauce, sesame oil, cumin, and black pepper. Toss to coat. Cook 2 more minutes.</li>
+  <li>Taste and adjust seasoning. Remove from heat.</li>
+</ol>
 
-- 1.5 lbs ground beef, 90/10
-- 2 medium zucchini, diced into 1/2-inch pieces
-- 1 bell pepper, diced
-- 3 cloves garlic, minced (or 1 tsp garlic powder)
-- 2 tbsp low-sodium soy sauce
-- 1 tsp sesame oil (optional — adds flavor)
-- 1/2 tsp black pepper
-- 1/2 tsp cumin
-- 1 tbsp olive oil
-
----
-
-## Instructions
-
-1. Heat olive oil in a large skillet over medium-high heat.
-2. Add ground beef. Break apart and cook until browned, about 7–8 minutes. Drain excess fat.
-3. Push beef to one side. Add zucchini and bell pepper to the empty side. Cook 4–5 minutes until softened.
-4. Add garlic. Stir everything together. Cook 1 minute.
-5. Add soy sauce, sesame oil, cumin, and black pepper. Toss to coat. Cook 2 more minutes.
-6. Taste and adjust seasoning. Remove from heat.
-
----
-
-## Nutrition (per serving — approx. 1.5 cups, no rice)
-
-| Calories | Protein | Carbs | Fat | Fiber | Sodium | Sugar |
-|----------|---------|-------|-----|-------|--------|-------|
-| ~380 cal | ~38g | ~6g | ~22g | ~2g | ~420mg | ~3g |
-
----
-
-## Meal Prep Notes
-
-- Store in airtight container in fridge for up to **4 days**.
-- Reheat on stovetop with a splash of water, or microwave covered for 2 minutes.
-- Serve over **brown rice or cauliflower rice** — not white rice if possible.
-- **Use 90/10 ground beef strictly** — the extra leanness matters for fatty liver management.
+<div class="notes-box">
+  <div class="notes-title">Meal Prep Notes</div>
+  <ul>
+    <li>Store in airtight container in the fridge for up to <strong>4 days</strong>.</li>
+    <li>Reheat on stovetop with a splash of water, or microwave covered for 2 minutes.</li>
+    <li>Serve over <strong>brown rice or cauliflower rice</strong> — not white rice if avoidable.</li>
+    <li><strong>90/10 ground beef only</strong> — the leanness matters for fatty liver management.</li>
+  </ul>
+</div>

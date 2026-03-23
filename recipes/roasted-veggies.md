@@ -1,54 +1,70 @@
 ---
-layout: page
+layout: default
 title: Roasted Veggies
-permalink: /recipes/roasted-veggies/
 ---
 
-# Roasted Veggies
+<a href="{{ '/recipes/' | relative_url }}" class="back-link">← Recipes</a>
 
-**Serves:** 4 | **Serving Size:** approx. 1 cup roasted | **Cook:** Ninja Crispi Pro 4-qt
+<div class="page-header">
+  <div class="label">Ninja Crispi · Veggie · Batch Cook</div>
+  <h1>Roasted Veggies</h1>
+  <div class="meta-row">
+    <span class="meta-item"><strong>Serves:</strong> 4</span>
+    <span class="meta-item"><strong>Serving:</strong> ~1 cup roasted</span>
+    <span class="meta-item"><strong>Cook:</strong> Ninja Crispi Pro 4-qt</span>
+  </div>
+</div>
 
-| Gout-Friendly | Fatty Liver-Friendly |
-|---------------|----------------------|
-| ★★★★★ (5/5) | ★★★★★ (5/5) |
+<div class="ratings">
+  <div class="rating-pill">
+    <span class="pill-label">Gout-Friendly</span>
+    <span class="pill-stars">★★★★★</span>
+    <span class="pill-note">Zero purines. High water content supports uric acid flushing.</span>
+  </div>
+  <div class="rating-pill">
+    <span class="pill-label">Fatty Liver-Friendly</span>
+    <span class="pill-stars">★★★★★</span>
+    <span class="pill-note">High fiber, no saturated fat, low sugar.</span>
+  </div>
+</div>
 
-All vegetables, zero purines, high water content supports uric acid flushing. High fiber, no saturated fat.
+<h2>Nutrition <small style="font-size:0.75rem;color:var(--text-muted);font-family:var(--sans);font-weight:300;">per serving — ~1 cup</small></h2>
+<div class="nutrition-grid">
+  <div class="nutrition-cell"><span class="n-value">~120</span><span class="n-label">Calories</span></div>
+  <div class="nutrition-cell"><span class="n-value">~4g</span><span class="n-label">Protein</span></div>
+  <div class="nutrition-cell"><span class="n-value">~13g</span><span class="n-label">Carbs</span></div>
+  <div class="nutrition-cell"><span class="n-value">~7g</span><span class="n-label">Fat</span></div>
+  <div class="nutrition-cell"><span class="n-value">~4g</span><span class="n-label">Fiber</span></div>
+  <div class="nutrition-cell"><span class="n-value">~160mg</span><span class="n-label">Sodium</span></div>
+  <div class="nutrition-cell"><span class="n-value">~5g</span><span class="n-label">Sugar</span></div>
+</div>
 
----
+<h2>Ingredients</h2>
+<ul class="ingredients-list">
+  <li>2 medium zucchini, cut into half-moons</li>
+  <li>1 large head broccoli, cut into florets</li>
+  <li>2 bell peppers, cut into 1-inch pieces</li>
+  <li>2 tbsp olive oil</li>
+  <li>1 tsp garlic powder</li>
+  <li>½ tsp paprika</li>
+  <li>Salt and black pepper to taste</li>
+</ul>
 
-## Ingredients
+<h2>Instructions</h2>
+<ol class="steps-list">
+  <li>Cut all vegetables into similar-sized pieces for even cooking.</li>
+  <li>Toss vegetables with olive oil, garlic powder, paprika, salt, and pepper in a large bowl.</li>
+  <li>Add veggies to Ninja Crispi basket — they can all go in together, they shrink down.</li>
+  <li>Air fry at 375°F for 18–20 minutes, shaking basket halfway through.</li>
+  <li>Veggies should be tender with slightly charred edges. Add 3–4 minutes if you prefer more char.</li>
+</ol>
 
-- 2 medium zucchini, cut into half-moons
-- 1 large head broccoli, cut into florets
-- 2 bell peppers, cut into 1-inch pieces
-- 2 tbsp olive oil
-- 1 tsp garlic powder
-- 1/2 tsp paprika
-- Salt and black pepper to taste
-
----
-
-## Instructions
-
-1. Cut all vegetables into similar-sized pieces for even cooking.
-2. Toss vegetables with olive oil, garlic powder, paprika, salt, and pepper in a large bowl.
-3. Add veggies to Ninja Crispi basket — they can all go together, they shrink down.
-4. Air fry at **375°F for 18–20 minutes**, shaking basket halfway through.
-5. Veggies should be tender with slightly charred edges. Add 3–4 minutes if you prefer more char.
-
----
-
-## Nutrition (per serving — approx. 1 cup)
-
-| Calories | Protein | Carbs | Fat | Fiber | Sodium | Sugar |
-|----------|---------|-------|-----|-------|--------|-------|
-| ~120 cal | ~4g | ~13g | ~7g | ~4g | ~160mg | ~5g |
-
----
-
-## Meal Prep Notes
-
-- Store in an airtight container in the fridge for up to **4 days**.
-- Reheat in Ninja Crispi at **375°F for 5–6 minutes**.
-- Works as a side with chicken, shrimp, eggs, or stir-fry — it pairs with everything in this system.
-- Swap in any similar vegetables: yellow squash, asparagus, cauliflower.
+<div class="notes-box">
+  <div class="notes-title">Meal Prep Notes</div>
+  <ul>
+    <li>Store in airtight container in the fridge for up to <strong>4 days</strong>.</li>
+    <li>Reheat in Ninja Crispi at <strong>375°F for 5–6 minutes</strong>.</li>
+    <li>Pairs with everything in this system — chicken, shrimp, eggs, stir-fry.</li>
+    <li>Swap in yellow squash, asparagus, or cauliflower as needed.</li>
+  </ul>
+</div>
