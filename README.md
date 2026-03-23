@@ -25,3 +25,5 @@ Every recipe card includes:
 - Fatty Liver-Friendly rating (1–5 ⭐)
 - Ninja Crispi Pro instructions where applicable
 - Meal prep and storage notes
+
+BUILD
