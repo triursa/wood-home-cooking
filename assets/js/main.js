@@ -1,33 +1,37 @@
 // Shared layout injection
 (function() {
-  // Determine depth for relative paths
   const path = window.location.pathname;
-  const depth = (path.match(/\//g) || []).length - 1;
-  // For GitHub Pages project site: /wood-meal-plan/... has depth >= 1
-  // We need to find the root
-  const segments = path.split('/').filter(Boolean);
-  // root is always /wood-meal-plan/
-  let root = '/wood-meal-plan/';
-  // if running locally from file or different base, fall back
-  if (!path.includes('wood-meal-plan')) root = '/';
+
+  // Dynamically determine the repo root.
+  // GitHub Pages project sites live at /<repo-name>/...
+  // We detect depth by counting path segments and back up to root accordingly.
+  // Works for: /wood-home-cooking/, /wood-home-cooking/recipes/, etc.
+  // Also works when running locally from file:// (root = '/')
+
+  function getRoot() {
+    // file:// local preview
+    if (window.location.protocol === 'file:') return './';
+
+    const segments = path.split('/').filter(Boolean);
+    // GitHub Pages: first segment is the repo name
+    // pages at root: /repo/            -> depth 0, root = /repo/
+    // pages at depth 1: /repo/recipes/ -> root = /repo/
+    // pages at depth 2: /repo/a/b.html -> root = /repo/
+    if (segments.length === 0) return '/';
+    const repoName = segments[0];
+    return '/' + repoName + '/';
+  }
+
+  const root = getRoot();
 
   function r(p) { return root + p; }
 
-  // Inject CSS link if not present
-  if (!document.querySelector('link[data-shared]')) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.setAttribute('data-shared', '1');
-    link.href = root + 'assets/css/style.css';
-    document.head.appendChild(link);
-  }
-
-  // Header
-  const currentPath = window.location.pathname;
+  // Active nav detection
   function isActive(section) {
-    return currentPath.includes('/' + section + '/') ? 'class="active"' : '';
+    return path.includes('/' + section + '/') ? 'class="active"' : '';
   }
 
+  // Inject header
   const header = `
 <header class="site-header">
   <div class="site-wrapper">
@@ -50,10 +54,10 @@
   document.body.insertAdjacentHTML('afterbegin', header);
   document.body.insertAdjacentHTML('beforeend', footer);
 
-  // Grocery checkbox persistence
+  // Grocery checkbox persistence (session only — resets when tab closes)
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.grocery-list input[type="checkbox"]').forEach(cb => {
-      const key = 'g_' + window.location.pathname + '_' + cb.dataset.id;
+      const key = 'g_' + path + '_' + cb.dataset.id;
       if (sessionStorage.getItem(key) === '1') {
         cb.checked = true;
         cb.closest('li').classList.add('checked');
@@ -68,7 +72,7 @@
       document.querySelectorAll('.grocery-list input[type="checkbox"]').forEach(cb => {
         cb.checked = false;
         cb.closest('li').classList.remove('checked');
-        sessionStorage.removeItem('g_' + window.location.pathname + '_' + cb.dataset.id);
+        sessionStorage.removeItem('g_' + path + '_' + cb.dataset.id);
       });
     });
   });
