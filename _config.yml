@@ -1,8 +1,2 @@
-title: "Wood Home Cooking"
-description: "Kaleb & Minny's meal prep system — recipes, weekly plans, and health-conscious cooking."
-baseurl: "/wood-meal-plan"
-url: "https://triursa.github.io"
-
-markdown: kramdown
-plugins:
-  - jekyll-feed
+# Disabling Jekyll — site uses plain static HTML
+plugins: []
