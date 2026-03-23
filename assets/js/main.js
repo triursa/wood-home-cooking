@@ -1,37 +1,21 @@
 // Shared layout injection
 (function() {
+  // ── CONFIGURE THIS ────────────────────────────────────────────────────────
+  // The base path for the site. Must match your GitHub Pages URL.
+  // e.g. if your site is https://triursa.github.io/wood-home-cooking/
+  // then BASE = '/wood-home-cooking'
+  const BASE = '/wood-home-cooking';
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const root = BASE + '/';
   const path = window.location.pathname;
-
-  // Dynamically determine the repo root.
-  // GitHub Pages project sites live at /<repo-name>/...
-  // We detect depth by counting path segments and back up to root accordingly.
-  // Works for: /wood-home-cooking/, /wood-home-cooking/recipes/, etc.
-  // Also works when running locally from file:// (root = '/')
-
-  function getRoot() {
-    // file:// local preview
-    if (window.location.protocol === 'file:') return './';
-
-    const segments = path.split('/').filter(Boolean);
-    // GitHub Pages: first segment is the repo name
-    // pages at root: /repo/            -> depth 0, root = /repo/
-    // pages at depth 1: /repo/recipes/ -> root = /repo/
-    // pages at depth 2: /repo/a/b.html -> root = /repo/
-    if (segments.length === 0) return '/';
-    const repoName = segments[0];
-    return '/' + repoName + '/';
-  }
-
-  const root = getRoot();
 
   function r(p) { return root + p; }
 
-  // Active nav detection
   function isActive(section) {
     return path.includes('/' + section + '/') ? 'class="active"' : '';
   }
 
-  // Inject header
   const header = `
 <header class="site-header">
   <div class="site-wrapper">
