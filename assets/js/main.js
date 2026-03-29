@@ -24,7 +24,7 @@
       <a href="${r('recipes/')}" ${isActive('recipes')}>Recipes</a>
       <a href="${r('meal-plans/')}" ${isActive('meal-plans')}>Meal Plans</a>
       <a href="${r('grocery-lists/')}" ${isActive('grocery-lists')}>Grocery Lists</a>
-      <a href="${r('knowledge-base/preferences.html')}" ${isActive('knowledge-base')}>Guidelines</a>
+      <a href="${r('knowledge-base/')}" ${isActive('knowledge-base')}>Guidelines</a>
     </nav>
   </div>
 </header>`;
