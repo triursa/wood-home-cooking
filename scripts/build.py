@@ -415,8 +415,13 @@ def build():
     os.makedirs(assets_css, exist_ok=True)
     os.makedirs(assets_js, exist_ok=True)
     
-    # Write the CSS (same styling)
-    with open("/tmp/wood-home-cooking/assets/css/style.css") as f:
+    # Write the CSS (same styling) — look for it relative to the script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    site_root = os.path.dirname(script_dir)  # scripts/ -> repo root
+    css_path = os.path.join(site_root, "assets", "css", "style.css")
+    if not os.path.exists(css_path):
+        css_path = os.path.join(script_dir, "assets", "css", "style.css")
+    with open(css_path) as f:
         css = f.read()
     with open(os.path.join(assets_css, "style.css"), "w") as f:
         f.write(css)
