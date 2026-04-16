@@ -1,13 +1,7 @@
 // Shared layout injection
 (function() {
-  // ── CONFIGURE THIS ────────────────────────────────────────────────────────
-  // The base path for the site. Must match your GitHub Pages URL.
-  // e.g. if your site is https://triursa.github.io/wood-home-cooking/
-  // then BASE = '/wood-home-cooking'
-  const BASE = '/wood-home-cooking';
-  // ─────────────────────────────────────────────────────────────────────────
-
-  const root = BASE + '/';
+  const BASE = '';
+  const root = '/';
   const path = window.location.pathname;
 
   function r(p) { return root + p; }
