@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout site repo
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REPO_PAT }}
 
       - name: Checkout vault repo
         uses: actions/checkout@v4
@@ -18,7 +20,7 @@ jobs:
           repository: triursa/second-brain-vault
           ref: ${{ github.event.client_payload.ref || 'master' }}
           path: _vault
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_PAT }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -34,10 +36,6 @@ jobs:
           OUTPUT_DIR=$GITHUB_WORKSPACE/_site \
           python3 scripts/build.py
 
-      - name: Copy assets
-        run: |
-          cp -r assets _site/
-
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
@@ -45,12 +43,11 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy _site --project-name=kitchen --branch=main
 
-      - name: Commit generated HTML to repo (optional mirror)
+      - name: Commit generated HTML to repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Copy generated files back (excluding assets which are already tracked)
           cp -r _site/* ./
           git add recipes/ meal-plans/ grocery-lists/ knowledge-base/ index.html
-          git diff --cached --quiet || git commit -m "Auto-rebuild from vault @ $(echo ${{ github.event.client_payload.ref || 'manual' }} | cut -c1-7)"
+          git diff --cached --quiet || git commit -m "Auto-rebuild from vault @ $(echo '${{ github.event.client_payload.ref || 'manual' }}' | cut -c1-7)"
           git push
