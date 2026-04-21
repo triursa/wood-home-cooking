@@ -337,37 +337,149 @@ def recipe_card_html(data, href):
       </a>'''
 
 
+def parse_recipe_sections(body_md):
+    """Extract named sections from recipe body. Returns dict of section_name -> list of lines."""
+    sections = {}
+    current = "intro"
+    sections[current] = []
+    
+    for line in body_md.split('\n'):
+        m = re.match(r'^##\s+(.+)$', line.strip())
+        if m:
+            current = m.group(1).strip()
+            sections[current] = []
+        else:
+            sections[current].append(line)
+    
+    return sections
+
+
+def build_ingredients_html(lines):
+    """Convert ingredient markdown lines into structured ing-rows, supporting sub-groups."""
+    html_parts = []
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            continue
+        # Sub-group header (### or bold standalone line)
+        m = re.match(r'^###\s+(.+)$', stripped)
+        if m:
+            html_parts.append(f'<div class="ing-group-label">{esc(m.group(1))}</div>')
+            continue
+        # Ingredient row: - [amount] name or - name, amount
+        m = re.match(r'^[-*]\s+(.+)$', stripped)
+        if m:
+            item = m.group(1).strip()
+            # Try to split "Name – amount" or "Name, amount" or "amount name"
+            # Pattern: leading quantity then name
+            qty_match = re.match(r'^([\d/\.\s]+(?:g|ml|oz|lb|cup|cups|tbsp|tsp|clove|cloves|piece|pieces|slice|slices|whole|large|medium|small|handful|pinch|dash|to taste|as needed)[^\w]*)(.+)$', item, re.IGNORECASE)
+            if qty_match:
+                amount = qty_match.group(1).strip().rstrip(',').strip()
+                name = qty_match.group(2).strip()
+            else:
+                # try "Name – qty" split
+                dash_match = re.split(r'\s+[–—-]{1,2}\s+', item, maxsplit=1)
+                if len(dash_match) == 2:
+                    name, amount = dash_match[0].strip(), dash_match[1].strip()
+                else:
+                    name, amount = item, ""
+            html_parts.append(
+                f'<div class="ing-row">'
+                f'<span class="ing-name">{inline_md(name)}</span>'
+                + (f'<span class="ing-amount">{esc(amount)}</span>' if amount else '')
+                + '</div>'
+            )
+            continue
+        # Fallback: render as plain paragraph
+        if stripped and not stripped.startswith('#'):
+            html_parts.append(f'<p>{inline_md(stripped)}</p>')
+    
+    return '\n'.join(html_parts)
+
+
+def build_steps_html(lines):
+    """Convert step markdown lines into step-card divs."""
+    steps = []
+    step_num = 0
+    current_text = []
+    
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            if current_text:
+                steps.append(' '.join(current_text))
+                current_text = []
+            continue
+        # Ordered list item
+        m = re.match(r'^\d+\.\s+(.+)$', stripped)
+        if m:
+            if current_text:
+                steps.append(' '.join(current_text))
+                current_text = []
+            current_text = [m.group(1)]
+            continue
+        # Unordered list item
+        m = re.match(r'^[-*]\s+(.+)$', stripped)
+        if m:
+            if current_text:
+                steps.append(' '.join(current_text))
+                current_text = []
+            current_text = [m.group(1)]
+            continue
+        # Continuation line
+        if current_text:
+            current_text.append(stripped)
+        else:
+            current_text = [stripped]
+    
+    if current_text:
+        steps.append(' '.join(current_text))
+    
+    html_parts = []
+    for i, step in enumerate(steps, 1):
+        if step.strip():
+            html_parts.append(
+                f'<div class="step-card">'
+                f'<div class="step-num">{i}</div>'
+                f'<div class="step-text">{inline_md(step)}</div>'
+                f'</div>'
+            )
+    
+    return '\n'.join(html_parts)
+
+
+def build_nutrition_card_html(nutrition):
+    """Build the nutrition grid card."""
+    if not nutrition:
+        return ""
+    
+    # Preferred display order
+    order = ["Calories", "Protein", "Carbs", "Fat", "Fiber", "Sugar", "Sodium"]
+    cells = []
+    for key in order:
+        if key in nutrition:
+            cells.append(
+                f'<div class="nutrition-cell">'
+                f'<span class="n-value">{esc(nutrition[key])}</span>'
+                f'<span class="n-label">{esc(key)}</span>'
+                f'</div>'
+            )
+    # Any remaining keys
+    for key, val in nutrition.items():
+        if key not in order:
+            cells.append(
+                f'<div class="nutrition-cell">'
+                f'<span class="n-value">{esc(val)}</span>'
+                f'<span class="n-label">{esc(key)}</span>'
+                f'</div>'
+            )
+    
+    return f'<div class="nutrition-grid">{"".join(cells)}</div>'
+
+
 def recipe_page_html(data, back_href="/"):
-    """Generate a full recipe detail page."""
-    # Build ratings section
-    gout_html = ""
-    if data.get("gout_stars"):
-        gout_html = f'''<div class="rating-pill">
-          <div class="pill-label">Gout-Friendly</div>
-          <div class="pill-stars">{data["gout_stars"]}</div>
-          <div class="pill-note">{esc(data.get("gout_note", ""))}</div>
-        </div>'''
-    
-    liver_html = ""
-    if data.get("liver_stars"):
-        liver_html = f'''<div class="rating-pill">
-          <div class="pill-label">Fatty Liver-Friendly</div>
-          <div class="pill-stars">{data["liver_stars"]}</div>
-          <div class="pill-note">{esc(data.get("liver_note", ""))}</div>
-        </div>'''
-    
-    ratings_html = f'<div class="ratings">{gout_html}{liver_html}</div>' if gout_html or liver_html else ''
-    
-    # Use the md_to_html converter for the full body 
-    # But we strip the H1 since we render it in the page header
-    body_md = data["raw_body"]
-    # Remove the first H1 line
-    body_md = re.sub(r'^# .+\n', '', body_md, count=1)
-    # Also remove "← Recipes" style nav lines
-    body_md = re.sub(r'^←.*\n', '', body_md, count=1)
-    body_html = md_to_html(body_md)
-    
-    # Add card-label based on cook method
+    """Generate a full recipe detail page with split-column layout."""
+    # ── Label
     label_parts = []
     if "Crispi" in data.get("cook_method", ""):
         label_parts.append("Ninja Crispi")
@@ -382,16 +494,120 @@ def recipe_page_html(data, back_href="/"):
         label_parts.append("Breakfast")
     label = " · ".join(label_parts) if label_parts else ""
     
-    # Serve/cal info for meta
-    meta_items = []
+    # ── Meta badges
+    badge_items = []
     if data.get("serves"):
-        meta_items.append(f'<span class="meta-item"><strong>Serves</strong> {esc(data["serves"])}</span>')
+        badge_items.append(f'<span class="meta-badge">Serves {esc(data["serves"])}</span>')
     if data.get("calories"):
-        meta_items.append(f'<span class="meta-item"><strong>~{esc(data["calories"])} cal</strong>/serving</span>')
+        badge_items.append(f'<span class="meta-badge">~{esc(data["calories"])} cal</span>')
     if data.get("cook_method"):
-        meta_items.append(f'<span class="meta-item"><strong>{esc(data["cook_method"])}</strong></span>')
+        badge_items.append(f'<span class="meta-badge">{esc(data["cook_method"])}</span>')
+    meta_html = f'<div class="meta-badges">{"".join(badge_items)}</div>' if badge_items else ''
     
-    meta_html = f'<div class="meta-row">{"".join(meta_items)}</div>' if meta_items else ''
+    # ── Parse body into sections
+    body_md = data["raw_body"]
+    body_md = re.sub(r'^# .+\n', '', body_md, count=1)
+    body_md = re.sub(r'^←.*\n', '', body_md, count=1)
+    
+    sections = parse_recipe_sections(body_md)
+    
+    # ── Find ingredient section (flexible key matching)
+    ing_lines = []
+    steps_lines = []
+    other_sections = []
+    
+    for sec_name, sec_lines in sections.items():
+        lower = sec_name.lower()
+        if lower in ('ingredients', 'ingredient list', 'what you need', 'you will need'):
+            ing_lines = sec_lines
+        elif lower in ('instructions', 'directions', 'steps', 'method', 'how to make it', 'preparation'):
+            steps_lines = sec_lines
+        elif lower == 'intro':
+            pass  # skip intro metadata lines
+        else:
+            other_sections.append((sec_name, sec_lines))
+    
+    # ── Build left column: ingredients
+    left_html = ""
+    ing_body = build_ingredients_html(ing_lines) if ing_lines else ""
+    if ing_body:
+        left_html = f'''<div class="recipe-section-card">
+          <div class="recipe-section-label">Ingredients</div>
+          {ing_body}
+        </div>'''
+    
+    # ── Build right column: nutrition + ratings
+    right_parts = []
+    
+    # Nutrition
+    nutr_html = build_nutrition_card_html(data.get("nutrition", {}))
+    if nutr_html:
+        right_parts.append(f'''<div class="recipe-section-card">
+          <div class="recipe-section-label">Nutrition / serving</div>
+          {nutr_html}
+        </div>''')
+    
+    # Ratings
+    gout_html = ""
+    if data.get("gout_stars"):
+        gout_html = f'''<div class="rating-pill">
+          <div class="pill-label">Gout-Friendly</div>
+          <div class="pill-stars">{data["gout_stars"]}</div>
+          <div class="pill-note">{esc(data.get("gout_note", ""))}</div>
+        </div>'''
+    liver_html = ""
+    if data.get("liver_stars"):
+        liver_html = f'''<div class="rating-pill">
+          <div class="pill-label">Fatty Liver</div>
+          <div class="pill-stars">{data["liver_stars"]}</div>
+          <div class="pill-note">{esc(data.get("liver_note", ""))}</div>
+        </div>'''
+    
+    if gout_html or liver_html:
+        right_parts.append(f'''<div class="recipe-section-card">
+          <div class="recipe-section-label">Health Ratings</div>
+          <div class="ratings-inner">{gout_html}{liver_html}</div>
+        </div>''')
+    
+    right_html = '\n'.join(right_parts)
+    
+    # ── Split layout
+    split_html = ""
+    if left_html or right_html:
+        split_html = f'''<div class="recipe-split">
+      <div class="recipe-column">{left_html}</div>
+      <div class="recipe-column">{right_html}</div>
+    </div>'''
+    
+    # ── Steps section
+    steps_html = ""
+    step_cards = build_steps_html(steps_lines) if steps_lines else ""
+    if step_cards:
+        steps_html = f'''<div class="recipe-steps-section">
+      <h2>Instructions</h2>
+      {step_cards}
+    </div>'''
+    
+    # ── Other sections (timing, notes, etc.)
+    other_html_parts = []
+    for sec_name, sec_lines in other_sections:
+        lower = sec_name.lower()
+        sec_content_md = '\n'.join(sec_lines)
+        if lower == 'nutrition':
+            continue  # already rendered
+        elif lower in ('notes', 'chef notes', 'tips'):
+            # Render as notes-box
+            inner = build_ingredients_html(sec_lines)
+            other_html_parts.append(f'''<div class="notes-box">
+          <div class="notes-title">{esc(sec_name)}</div>
+          <ul>{"".join(f"<li>{inline_md(l.strip().lstrip('-').strip())}</li>" for l in sec_lines if l.strip() and l.strip() not in ("",))}</ul>
+        </div>''')
+        elif lower in ('timing', 'time breakdown', 'prep time'):
+            other_html_parts.append(f'<h2>{esc(sec_name)}</h2>' + md_to_html(sec_content_md))
+        else:
+            other_html_parts.append(f'<h2>{esc(sec_name)}</h2>' + md_to_html(sec_content_md))
+    
+    other_html = '\n'.join(other_html_parts)
     
     return f'''
     <a href="{esc(back_href)}" class="back-link">← Recipes</a>
@@ -400,8 +616,9 @@ def recipe_page_html(data, back_href="/"):
       <h1>{esc(data['title'])}</h1>
       {meta_html}
     </div>
-    {ratings_html}
-    {body_html}'''
+    {split_html}
+    {steps_html}
+    {other_html}'''
 
 
 # ── Build ──────────────────────────────────────────────────────────────────
@@ -636,7 +853,7 @@ def build_index():
       <h1 class="hero-title">Wood Home<br><em>Cooking</em></h1>
       <p class="hero-sub">Kaleb &amp; Minny's weekly meal prep system. Built around the Ninja Crispi Pro, Monday batch cook, and eating well with Gout and Fatty Liver in mind.</p>
       <div class="badge-row">
-        <span class="badge amber">1,800–2,000 cal / day</span>
+        <span class=\"badge clay\">1,800–2,000 cal / day</span>
         <span class="badge">Monday batch cook</span>
         <span class="badge">Gout &amp; Fatty Liver friendly</span>
       </div>
