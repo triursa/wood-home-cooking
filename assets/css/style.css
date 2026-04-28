@@ -1,28 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --bg:           #0c0c0f;
-  --bg-card:      #131318;
-  --bg-raised:    #1a1a22;
-  --bg-hover:     #20202a;
-  --border:       #22222e;
-  --border-light: #2e2e3e;
-  --clay:         #c47c5c;
-  --clay-dim:     #8a5540;
-  --clay-glow:    rgba(196,124,92,0.08);
-  --sage:         #7a9e7e;
-  --sage-dim:     #4a6e4e;
-  --green:        #5a9068;
-  --red:          #c05858;
-  --text:         #f0ede8;
-  --text-dim:     #9a9896;
-  --text-muted:   #5c5a58;
-  --serif:        'Playfair Display', Georgia, serif;
-  --sans:         'Inter', system-ui, sans-serif;
-  --mono:         'DM Mono', monospace;
-  --radius:       12px;
-  --radius-sm:    8px;
-  --radius-lg:    24px;
+  /* M3 Obsidian base tokens from theme-obsidian.css */
+  /* Per-domain accent override for Kitchen (warm clay) */
+  --md-sys-color-primary: #c47c5c;
+  --md-sys-color-on-primary: #1a1a1d;
+  --md-sys-color-primary-container: rgba(196,124,92,0.15);
+  --md-sys-color-on-primary-container: #e8b89e;
+
+  /* Semantic/signal colors (NOT theme tokens — preserved) */
+  --clay: #c47c5c;
+  --clay-dim: #8a5540;
+  --clay-glow: rgba(196,124,92,0.08);
+  --sage: #7a9e7e;
+  --sage-dim: #4a6e4e;
+  --green: #5a9068;
+  --red: #c05858;
+
+  /* Shorthand aliases for M3 tokens (used throughout styles) */
+  --bg: var(--md-sys-color-surface);
+  --bg-card: var(--md-sys-color-surface-container-low);
+  --bg-raised: var(--md-sys-color-surface-container);
+  --bg-hover: var(--md-sys-color-surface-container-high);
+  --border: var(--md-sys-color-outline-variant);
+  --border-light: var(--md-sys-color-outline);
+  --text: var(--md-sys-color-on-surface);
+  --text-dim: var(--md-sys-color-on-surface-variant);
+  --text-muted: var(--md-sys-color-outline);
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'DM Mono', monospace;
+  --radius: var(--md-sys-shape-corner-medium);
+  --radius-sm: var(--md-sys-shape-corner-small);
+  --radius-lg: 24px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,9 +56,7 @@ a:hover { color: var(--text); text-decoration: underline; text-underline-offset:
   border-bottom: 1px solid var(--border);
   padding: 14px 0;
   position: sticky; top: 0;
-  background: rgba(12,12,15,0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: var(--md-sys-color-surface-container);
   z-index: 100;
 }
 .site-header .site-wrapper {

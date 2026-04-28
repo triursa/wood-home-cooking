@@ -2,7 +2,7 @@
 """
 Build script for kitchen.kaleb.one
 Reads markdown from second-brain-vault/domains/cooking/ and generates styled HTML.
-Keeps the same amber/dark kitchen aesthetic.
+M3 Obsidian theme with warm clay accent.
 """
 
 import os
@@ -149,14 +149,16 @@ def esc(text):
 def page_html(title, body_html, section=""):
     """Wrap content in the full page HTML with header/footer."""
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="obsidian" data-domain="kitchen">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{esc(title)}</title>
+  <meta name="theme-color" content="#11151C">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="https://theme.kaleb.one/dist/theme-obsidian.css">
 </head>
 <body>
 <script src="/assets/js/main.js"></script>
@@ -1141,4 +1143,3 @@ def build_knowledge_base():
     return built
 
 if __name__ == "__main__":
-    build()
