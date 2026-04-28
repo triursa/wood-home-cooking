@@ -1143,3 +1143,4 @@ def build_knowledge_base():
     return built
 
 if __name__ == "__main__":
+    build()
