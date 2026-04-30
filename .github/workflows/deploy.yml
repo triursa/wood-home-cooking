@@ -3,24 +3,23 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
     steps:
       - uses: actions/checkout@v4
 
-      - name: Checkout vault content
-        uses: actions/checkout@v4
-        with:
-          repository: kaleb-wood/second-brain-vault
-          path: second-brain-vault
-          token: ${{ secrets.VAULT_PAT }}
+      - name: Fetch vault content (cooking domain)
+        env:
+          GH_TOKEN: ${{ secrets.REPO_PAT }}
+        run: |
+          mkdir -p _vault
+          curl -L -H "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/triursa/second-brain-vault/tarball/master" \
+            | tar -xz --strip-components=1 -C _vault \
+              "triursa-second-brain-vault-*/domains/cooking"
 
       - uses: actions/setup-node@v4
         with:
@@ -31,13 +30,11 @@ jobs:
 
       - run: npm run build
         env:
-          VAULT_DIR: ${{ github.workspace }}/second-brain-vault/domains/cooking
+          VAULT_DIR: ${{ github.workspace }}/_vault/domains/cooking
 
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: kitchen-site
-          directory: dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy dist --project-name=kitchen-site --branch=main

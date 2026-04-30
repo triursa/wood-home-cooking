@@ -22,7 +22,6 @@ function parseRecipeMeta(body: string) {
   const cookMatch = body.match(/Cook:\s*(.+?)(?:\s+Gout|$)/);
 
   let cookMethod = cookMatch?.[1]?.trim() || '';
-  const title = '';
 
   return {
     goutStars: goutMatch?.[1] || '',
@@ -144,21 +143,20 @@ const groceryLists = (docsByFolder['grocery-lists'] || [])
       </div>
     </>
   )}
-</BaseLayout>
 
-<!-- Pagefind search UI -->
-<div id="search" style="max-width:480px;margin:1rem auto 2rem;"></div>
-<script is:inline src="/pagefind/pagefind-ui.js"></script>
-<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
-<link rel="stylesheet" href="/pagefind-swatch.css" />
-<script is:inline>
-  window.addEventListener('DOMContentLoaded', () => {
-    if (typeof PagefindUI !== 'undefined') {
-      new PagefindUI({
-        element: '#search',
-        showSubResults: true,
-        showImages: false,
-      });
-    }
-  });
-</script>
+  <!-- Pagefind search UI -->
+  <div id="search" style="max-width:480px;margin:1rem auto 2rem;"></div>
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof PagefindUI !== 'undefined') {
+        new PagefindUI({
+          element: '#search',
+          showSubResults: true,
+          showImages: false,
+        });
+      }
+    });
+  </script>
+</BaseLayout>
