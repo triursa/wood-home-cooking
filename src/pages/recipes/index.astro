@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allDocs = await getCollection('cooking', ({ id, data }) =>
+  id.startsWith('recipes/') && !id.endsWith('index.md') && data.status === 'active' && (data.tags || []).includes('recipe')
+);
+
+function parseRecipeMeta(body: string) {
+  const goutMatch = body.match(/Gout-Friendly\s*(★+☆*)/);
+  const liverMatch = body.match(/Fatty\s+Liver-Friendly\s*(★+☆*)/);
+  const servesMatch = body.match(/Serves:\s*(\d+[-–]?\d*)/);
+  const calMatch = body.match(/~?(\d+[-–]?\d*)\s*Calories/);
+  const cookMatch = body.match(/Cook:\s*(.+?)(?:\s+Gout|$)/);
+  return {
+    goutStars: goutMatch?.[1] || '',
+    liverStars: liverMatch?.[1] || '',
+    serves: servesMatch?.[1] || '',
+    calories: calMatch?.[1] || '',
+    cookMethod: cookMatch?.[1]?.trim() || '',
+  };
+}
+
+function getRecipeLabel(cookMethod: string, title: string): string {
+  const parts: string[] = [];
+  if (cookMethod) {
+    if (cookMethod.includes('Crispi')) parts.push('Ninja Crispi');
+    else if (cookMethod.toLowerCase().includes('stovetop')) parts.push('Stovetop');
+    else parts.push(cookMethod);
+  }
+  const t = title.toLowerCase();
+  if (['chicken', 'beef', 'shrimp', 'egg'].some(w => t.includes(w))) parts.push('Protein');
+  else if (['veggie', 'veggies'].some(w => t.includes(w))) parts.push('Veggie');
+  else if (['oats', 'breakfast'].some(w => t.includes(w))) parts.push('Breakfast');
+  return parts.join(' · ') || 'Recipe';
+}
+
+const recipes = allDocs.sort((a, b) => (a.data.title || a.id).localeCompare(b.data.title || b.id));
+---
+
+<BaseLayout title="Recipes | Wood Home Cooking" section="recipes">
+  <h2>All Recipes</h2>
+  <div class="card-grid">
+    {recipes.map((doc) => {
+      const slug = doc.id.replace('recipes/', '').replace('.md', '');
+      const meta = parseRecipeMeta(doc.body ?? '');
+      const title = (doc.data.title || slug).replace(' | Wood Home Cooking', '');
+      const label = getRecipeLabel(meta.cookMethod, title);
+      const metaParts = [meta.serves ? `${meta.serves} servings` : '', meta.calories ? `~${meta.calories} cal` : ''].filter(Boolean);
+
+      return (
+        <a href={`/recipes/${slug}/`} class="card">
+          <div class="card-label">{label}</div>
+          <div class="card-title">{title}</div>
+          {metaParts.length > 0 && <div class="card-meta">{metaParts.map(p => <span>{p}</span>)}</div>}
+          {(meta.goutStars || meta.liverStars) && (
+            <div class="card-ratings">
+              {meta.goutStars && <div class="mini-rating">Gout <span class="stars">{meta.goutStars}</span></div>}
+              {meta.liverStars && <div class="mini-rating">Liver <span class="stars">{meta.liverStars}</span></div>}
+            </div>
+          )}
+        </a>
+      );
+    })}
+  </div>
+</BaseLayout>

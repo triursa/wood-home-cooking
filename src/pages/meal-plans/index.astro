@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allDocs = await getCollection('cooking', ({ id }) =>
+  id.startsWith('meal-plans/') && !id.endsWith('index.md')
+);
+
+const mealPlans = allDocs.sort((a, b) => (b.data.title || b.id).localeCompare(a.data.title || a.id));
+---
+
+<BaseLayout title="Meal Plans | Wood Home Cooking" section="meal-plans">
+  <h2>Meal Plans</h2>
+  <div class="card-grid">
+    {mealPlans.map((doc) => {
+      const slug = doc.id.replace('meal-plans/', '').replace('.md', '');
+      const title = (doc.data.title || slug).replace(' | Wood Home Cooking', '');
+      const label = /^\d{4}-\d{2}$/.test(slug) ? 'Monthly Plan' : 'Weekly Plan';
+
+      return (
+        <a href={`/meal-plans/${slug}/`} class="card">
+          <div class="card-label">{label}</div>
+          <div class="card-title">{title}</div>
+        </a>
+      );
+    })}
+  </div>
+</BaseLayout>

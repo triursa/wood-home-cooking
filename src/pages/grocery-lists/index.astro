@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allDocs = await getCollection('cooking', ({ id }) =>
+  id.startsWith('grocery-lists/') && !id.endsWith('index.md')
+);
+
+const groceryLists = allDocs.sort((a, b) => (a.data.title || a.id).localeCompare(b.data.title || b.id));
+---
+
+<BaseLayout title="Grocery Lists | Wood Home Cooking" section="grocery-lists">
+  <h2>Grocery Lists</h2>
+  <div class="card-grid">
+    {groceryLists.map((doc) => {
+      const slug = doc.id.replace('grocery-lists/', '').replace('.md', '');
+      const title = (doc.data.title || slug).replace(' | Wood Home Cooking', '');
+
+      return (
+        <a href={`/grocery-lists/${slug}/`} class="card">
+          <div class="card-label">Grocery List</div>
+          <div class="card-title">{title}</div>
+        </a>
+      );
+    })}
+  </div>
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('cooking', ({ id }) =>
+    id.startsWith('knowledge-base/') && !id.endsWith('index.md')
+  );
+  return docs.map((doc) => ({
+    params: { slug: doc.id.replace('knowledge-base/', '').replace('.md', '') },
+    props: { doc },
+  }));
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+
+const title = (doc.data.title || doc.id).replace(' | Wood Home Cooking', '').replace('knowledge-base/', '').replace('.md', '');
+---
+
+<BaseLayout title={`${title} | Wood Home Cooking`} section="knowledge-base">
+  <a href="/knowledge-base/" class="back-link">← Guidelines</a>
+  <div class="page-header">
+    <div class="page-label">Knowledge Base</div>
+    <h1>{title}</h1>
+  </div>
+  <article>
+    <Content />
+  </article>
+</BaseLayout>

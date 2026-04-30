@@ -1,0 +1,13 @@
+/* Pagefind UI theme override for M3 Obsidian */
+:root {
+  --pagefind-ui-scale: 1;
+  --pagefind-ui-primary: var(--md-sys-color-primary, #BACFE5);
+  --pagefind-ui-text: var(--md-sys-color-on-surface, #DCE1E9);
+  --pagefind-ui-background: var(--md-sys-color-surface-container-low, #1A1F26);
+  --pagefind-ui-border: var(--md-sys-color-outline-variant, #454D56);
+  --pagefind-ui-tag: var(--md-sys-color-primary-container, #3D5167);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 8px;
+  --pagefind-ui-image-gap: 0;
+  --pagefind-ui-image-position: left;
+}
