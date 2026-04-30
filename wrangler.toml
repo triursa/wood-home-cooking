@@ -1,0 +1,4 @@
+#:schema node_modules/@astrojs/cloudflare/schema.json
+name = "kitchen-site"
+compatibility_date = "2026-04-29"
+pages_build_output_dir = "./dist"

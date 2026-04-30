@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('cooking', ({ id }) =>
+    id.startsWith('meal-plans/') && !id.endsWith('index.md')
+  );
+  return docs.map((doc) => ({
+    params: { slug: doc.id.replace('meal-plans/', '').replace('.md', '') },
+    props: { doc },
+  }));
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+
+const title = (doc.data.title || doc.id).replace(' | Wood Home Cooking', '').replace('meal-plans/', '').replace('.md', '');
+const slug = doc.id.replace('meal-plans/', '').replace('.md', '');
+const label = /^\d{4}-\d{2}$/.test(slug) ? 'Monthly Plan' : 'Weekly Plan';
+---
+
+<BaseLayout title={`${title} | Wood Home Cooking`} section="meal-plans">
+  <a href="/meal-plans/" class="back-link">← Meal Plans</a>
+  <div class="page-header">
+    <div class="page-label">{label}</div>
+    <h1>{title}</h1>
+  </div>
+  <article>
+    <Content />
+  </article>
+</BaseLayout>
+
+<!-- Checkbox persistence for inline grocery checkboxes in meal plans -->
+<script is:inline src="/scripts/checkbox-persist.js"></script>

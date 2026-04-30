@@ -1,0 +1,51 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  domain?: string;
+  section?: string;
+}
+
+const {
+  title,
+  description,
+  domain = 'kitchen',
+  section = '',
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en" data-theme="obsidian" data-domain={domain}>
+  <head>
+    <BaseHead title={title} description={description} domain={domain} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-wrapper">
+        <a href="/" class="site-title">Wood Home Cooking <span>/ Kaleb &amp; Minny</span></a>
+        <nav>
+          <a href="/recipes/" class:list={[{ active: currentPath.includes('/recipes/') }]}>Recipes</a>
+          <a href="/meal-plans/" class:list={[{ active: currentPath.includes('/meal-plans/') }]}>Meal Plans</a>
+          <a href="/grocery-lists/" class:list={[{ active: currentPath.includes('/grocery-lists/') }]}>Grocery Lists</a>
+          <a href="/knowledge-base/" class:list={[{ active: currentPath.includes('/knowledge-base/') }]}>Guidelines</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="site-wrapper">
+        <slot />
+      </div>
+    </main>
+
+    <footer>
+      <div class="site-wrapper">
+        Wood Home Cooking &mdash; Kaleb &amp; Minny &mdash; Kyle, TX
+      </div>
+    </footer>
+  </body>
+</html>

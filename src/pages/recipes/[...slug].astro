@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('cooking', ({ id, data }) =>
+    id.startsWith('recipes/') && !id.endsWith('index.md') && data.status === 'active' && (data.tags || []).includes('recipe')
+  );
+  return docs.map((doc) => ({
+    params: { slug: doc.id.replace('recipes/', '').replace('.md', '') },
+    props: { doc },
+  }));
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+
+const title = (doc.data.title || doc.id).replace(' | Wood Home Cooking', '').replace('recipes/', '').replace('.md', '');
+
+// Parse health ratings from body
+function parseHealthRatings(body: string) {
+  const goutMatch = body.match(/Gout-Friendly\s*(★+☆*)\s*(.*?)(?:Fatty|\n|$)/);
+  const liverMatch = body.match(/Fatty\s+Liver-Friendly\s*(★+☆*)\s*(.*?)$/);
+  const servesMatch = body.match(/Serves:\s*(\d+[-–]?\d*)/);
+  const calMatch = body.match(/~?(\d+[-–]?\d*)\s*Calories/);
+  const cookMatch = body.match(/Cook:\s*(.+?)(?:\s+Gout|$)/m);
+
+  return {
+    goutStars: goutMatch?.[1] || '',
+    goutNote: goutMatch?.[2]?.trim().replace(/\.$/, '') || '',
+    liverStars: liverMatch?.[1] || '',
+    liverNote: liverMatch?.[2]?.trim().replace(/\.$/, '') || '',
+    serves: servesMatch?.[1] || '',
+    calories: calMatch?.[1] || '',
+    cookMethod: cookMatch?.[1]?.trim() || '',
+  };
+}
+
+function getLabel(cookMethod: string, titleText: string): string {
+  const parts: string[] = [];
+  if (cookMethod) {
+    if (cookMethod.includes('Crispi')) parts.push('Ninja Crispi');
+    else if (cookMethod.toLowerCase().includes('stovetop')) parts.push('Stovetop');
+    else parts.push(cookMethod);
+  }
+  const t = titleText.toLowerCase();
+  if (['chicken', 'beef', 'shrimp', 'egg'].some(w => t.includes(w))) parts.push('Protein');
+  else if (['veggie', 'veggies'].some(w => t.includes(w))) parts.push('Veggie');
+  else if (['oats', 'breakfast'].some(w => t.includes(w))) parts.push('Breakfast');
+  return parts.join(' · ');
+}
+
+const health = parseHealthRatings(doc.body ?? '');
+const label = getLabel(health.cookMethod, title);
+const badges = [
+  health.serves ? `Serves ${health.serves}` : '',
+  health.calories ? `~${health.calories} cal` : '',
+  health.cookMethod || '',
+].filter(Boolean);
+---
+
+<BaseLayout title={`${title} | Wood Home Cooking`} section="recipes">
+  <a href="/recipes/" class="back-link">← Recipes</a>
+  <div class="page-header">
+    {label && <div class="page-label">{label}</div>}
+    <h1>{title}</h1>
+    {badges.length > 0 && (
+      <div class="meta-badges">
+        {badges.map(b => <span class="meta-badge">{b}</span>)}
+      </div>
+    )}
+  </div>
+
+  {(health.goutStars || health.liverStars) && (
+    <div class="ratings">
+      <div class="ratings-inner">
+        {health.goutStars && (
+          <div class="rating-pill">
+            <div class="pill-label">Gout-Friendly</div>
+            <div class="pill-stars">{health.goutStars}</div>
+            {health.goutNote && <div class="pill-note">{health.goutNote}</div>}
+          </div>
+        )}
+        {health.liverStars && (
+          <div class="rating-pill">
+            <div class="pill-label">Fatty Liver</div>
+            <div class="pill-stars">{health.liverStars}</div>
+            {health.liverNote && <div class="pill-note">{health.liverNote}</div>}
+          </div>
+        )}
+      </div>
+    </div>
+  )}
+
+  <article>
+    <Content />
+  </article>
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allDocs = await getCollection('cooking', ({ id }) =>
+  id.startsWith('knowledge-base/') && !id.endsWith('index.md')
+);
+
+const kbDocs = allDocs.sort((a, b) => (a.data.title || a.id).localeCompare(b.data.title || b.id));
+---
+
+<BaseLayout title="Guidelines | Wood Home Cooking" section="knowledge-base">
+  <h2>Guidelines</h2>
+  <div class="card-grid">
+    {kbDocs.map((doc) => {
+      const slug = doc.id.replace('knowledge-base/', '').replace('.md', '');
+      const title = (doc.data.title || slug).replace(' | Wood Home Cooking', '');
+
+      return (
+        <a href={`/knowledge-base/${slug}/`} class="card">
+          <div class="card-label">Reference</div>
+          <div class="card-title">{title}</div>
+        </a>
+      );
+    })}
+  </div>
+</BaseLayout>
